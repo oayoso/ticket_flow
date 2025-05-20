@@ -260,7 +260,7 @@ socket.on('new_comment', (comment) => {
 ## TICKET
 
 #### 1. `comment`
-Enviar comentario a ese ticket.
+Asignar un agente a ese ticket.
 
 **Front:**
 ```
