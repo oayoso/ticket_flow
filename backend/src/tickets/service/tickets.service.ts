@@ -6,13 +6,15 @@ import { AssignTicketDto } from '../dto/assign-ticket.dto';
 import { TicketRepository } from '../repository/ticket.repository';
 import { TicketFactory } from '../factory/tickets.factory';
 import { UserFactory } from '../../auth/factory/user.factory';
+import { TicketGateway } from '../gateway/ticket.gateway';
 
 @Injectable()
 export class TicketsService {
   constructor(
     private readonly ticketRepo: TicketRepository,
     private readonly ticketFactory: TicketFactory,
-    private readonly userFactory: UserFactory
+    private readonly userFactory: UserFactory,
+    private readonly ticketGateway: TicketGateway,
   ) {}
 
   create(dto: CreateTicketDto, user: User) {
@@ -37,7 +39,9 @@ export class TicketsService {
     const ticket = await this.ticketFactory.createFromIdTicket(id);
     const agent = await this.userFactory.createFromId(dto.agentId);
 
-    return this.ticketRepo.update(ticket, { assigned_to: agent });
+    const update = await this.ticketRepo.update(ticket, { assigned_to: agent });
+    this.ticketGateway.notifyAgentAssigned(agent?.id, update)
+    return update;
   }
 
   async getMetrics() {
