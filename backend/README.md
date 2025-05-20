@@ -204,6 +204,8 @@ Authorization: Bearer <token>
 
 ### 💬 WEBSOCKET
 
+## COMENTARIOS
+
 #### 1. `join_ticke`
 
 Unirse a un ticket específico.
@@ -250,6 +252,27 @@ Obtiene los mensajes directos enviados a un usuario por su ID.
 ```
 socket.on('new_comment', (comment) => {
   console.log('Comentario nuevo:', comment);
+});
+```
+
+---
+
+## TICKET
+
+#### 1. `comment`
+Enviar comentario a ese ticket.
+
+**Front:**
+```
+
+const socket = io('http://localhost:3000', {
+  auth: { token },
+});
+
+const agentId = 'AGENT_ID_DEL_USUARIO_LOGUEADO';
+
+socket.on(`ticket-assigned-${agentId}`, (ticket) => {
+  console.log('Nuevo ticket asignado:', ticket);
 });
 ```
 
